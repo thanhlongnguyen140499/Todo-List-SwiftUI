@@ -8,24 +8,31 @@
 import Foundation
 
 /*
-    CRUD Functions in here
+ CRUD Functions in here
  */
 
 class ListViewModel: ObservableObject {
-    @Published var items: [ItemModel] = []
+    
+    @Published var items: [ItemModel] = [] {
+        // this array changes then didSet will be excused
+        didSet {
+            saveLocalItems()
+        }
+    }
+    let storageKey = "SwiftUIStorageKey"
     
     init (){
         getItems()
     }
     
     func getItems() {
-        let newItems = [
-            ItemModel(title: "This is the first title", isCompleted: false),
-            ItemModel(title: "Get Up", isCompleted: true),
-            ItemModel(title: "Work", isCompleted: true),
-        ]
+        guard let data = UserDefaults.standard.data(forKey: storageKey),
+              let savedItems = try? JSONDecoder().decode([ItemModel].self, from: data)
+        else {
+            return
+        }
         
-        items.append(contentsOf: newItems)
+        items.append(contentsOf: savedItems)
     }
     
     func deleteItem(indexSet: IndexSet)  {
@@ -45,6 +52,12 @@ class ListViewModel: ObservableObject {
             itemModel.id == item.id
         }) {
             items[index] =  item.updateCompletion()
+        }
+    }
+    
+    func saveLocalItems() {
+        if let encodedData = try? JSONEncoder().encode(items) {
+            UserDefaults.standard.setValue(encodedData, forKey: storageKey)
         }
     }
 }
