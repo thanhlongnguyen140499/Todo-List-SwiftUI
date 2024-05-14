@@ -28,7 +28,7 @@ struct NoItemsView: View {
                         Text("Add Something 🙈").padding(animate ? 15 : 25)
                             .foregroundColor(.white)
                             .fontWeight(.bold)
-                            .background(animate ? Color.primary : Color.accentColor.opacity(0.7))
+                            .background(animate ? Color.primary : Color.accentColor)
                             .cornerRadius(10)
                             .shadow(radius: 10, x: 0, y: animate ? 15 : 30)
                             .scaleEffect(animate ? 1.1 : 1)
@@ -39,6 +39,7 @@ struct NoItemsView: View {
                     addAnimation()
                 })
             }
+            .frame(maxWidth: 400)
             .multilineTextAlignment(.center)
             .padding(40)
         }

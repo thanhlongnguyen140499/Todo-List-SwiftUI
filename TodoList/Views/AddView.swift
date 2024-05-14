@@ -20,7 +20,7 @@ struct AddView: View {
             TextField("Type your todo...", text: $todoText)
                 .padding(.horizontal)
                 .frame(height: 50)
-                .background(.gray.opacity(0.3))
+                .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(10)
                 .padding(.horizontal)
                 
